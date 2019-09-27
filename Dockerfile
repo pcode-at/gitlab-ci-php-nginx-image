@@ -26,6 +26,7 @@ RUN apt-get install -my nginx
 RUN apt-get install -my gettext-base
 RUN apt-get install -my xvfb
 RUN apt-get install -my nodejs
+RUN apt-get install -my net-tools
 RUN apt install -my python-pip
 
 
