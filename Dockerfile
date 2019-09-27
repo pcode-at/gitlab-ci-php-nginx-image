@@ -47,7 +47,7 @@ RUN env LD_PRELOAD=/usr/lib/libcurl.so.3
 
 # Install pecl extensions
 RUN pecl install APCu-5.1.8
-RUN pecl install imagick
+RUN pecl install apcu imagick
 
 # Type docker-php-ext-install to see available extensions
 RUN docker-php-ext-configure intl
