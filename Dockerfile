@@ -52,7 +52,7 @@ RUN pecl install imagick
 # Type docker-php-ext-install to see available extensions
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql curl json intl gd xml zip bz2 opcache pcntl shmop
-RUN docker-php-ext-enable imagick
+RUN docker-php-ext-enable apcu imagick
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
