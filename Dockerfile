@@ -5,9 +5,7 @@ FROM php:7.1-fpm-jessie
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 
 # Install libs
-RUN apt update
 RUN apt-get update
-
 RUN apt-get install -my wget
 RUN apt-get install -my gnupg
 RUN apt-get install -my git
@@ -27,6 +25,18 @@ RUN apt-get install -my gettext-base
 RUN apt-get install -my xvfb
 RUN apt-get install -my nodejs
 RUN apt-get install -my net-tools
+RUN apt-get install -my acl
+RUN apt-get install -my mysql-client
+RUN apt-get install -my libmysqlclient-dev
+RUN apt-get install -my libgtk2.0-0
+RUN apt-get install -my libnotify-dev
+RUN apt-get install -my libgconf-2-4
+RUN apt-get install -my libnss3
+RUN apt-get install -my libxss1
+RUN apt-get install -my libasound2
+RUN apt-get install -my xvfb
+
+RUN apt update
 RUN apt install -my python-pip
 
 
@@ -40,6 +50,13 @@ RUN pip install yq
 RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 RUN chmod +x jq-linux64
 RUN mv jq-linux64 /usr/bin/jq
+
+# Install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update
+RUN apt-get install -my yarn
+RUN export PATH="$PATH:`yarn global bin`"
 
 # Install libcurl
 RUN cp /usr/lib/x86_64-linux-gnu/libcurl.so.3 /usr/lib/
@@ -69,6 +86,18 @@ RUN wget -q -O /usr/bin/xvfb-chrome https://bitbucket.org/atlassian/docker-node-
 RUN ln -sf /usr/bin/xvfb-chrome /usr/bin/google-chrome
 RUN chmod 777 /usr/bin/google-chrome
 
+# Install ruby
+RUN mkdir RUBY
+RUN cd RUBY && wget https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.0.tar.gz \
+    && tar xvfz ruby-2.3.0.tar.gz \
+    && cd ruby-2.3.0 && ./configure \
+    && make \
+    && make install
+
+RUN ln -s /usr/local/bin/ruby /usr/bin/ruby
+RUN ln -s /usr/local/bin/sass /usr/bin/sass
+
 WORKDIR /var/www/html
 
+EXPOSE 9000
 CMD ["php-fpm"]
